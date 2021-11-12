@@ -1,8 +1,0 @@
-*.o
-*.out
-lash
-*.swp
-dist/
-tags
-.vscode/
-.VSCodeCounter

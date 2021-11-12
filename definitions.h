@@ -13,4 +13,4 @@ typedef struct {
 /*
  * 	get next big int from user and return it in big_int struct style
  */
-big_int *get_big_int();
+void get_big_int(big_int *);

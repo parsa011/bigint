@@ -22,6 +22,8 @@ typedef struct {
  * 	get next big int from user and return it in big_int struct style
  */
 void get_big_int(big_int *);
+void sum_big_int(big_int *,big_int *);
+void sub_big_int(big_int *,big_int *);
 
 
 // terminal stuff

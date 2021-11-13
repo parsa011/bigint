@@ -12,14 +12,16 @@ int main()
 	big_int first, second;
 	get_big_int(&first);
 	get_big_int(&second);
-	//printl(first.val);
-	//printl(second.val);
+	printl(first.val);
+	printl(second.val);
 	return 0;
 }
 
-
 // functions declarations
 
+/*
+ *  get big int from user , and prevent of input letters and non digit characters , excecpt '-' for first char
+ */
 void get_big_int(big_int *buf)
 {
 	buf->val = malloc(BUFSIZE);

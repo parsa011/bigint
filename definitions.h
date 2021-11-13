@@ -1,6 +1,7 @@
 #define printl(x) printf("%s\n",x)
 #define EOL '\n'
 #define BUFSIZE 10
+#define NUM '0'		// num const , for convert num char to int
 
 #define CURSOR_LEFT(x) printf("\033[%dD", (x))
 #define CURSOR_RIGHT(x) printf("\033[%dC", (x))

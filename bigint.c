@@ -12,8 +12,9 @@ int main()
 	big_int first, second;
 	get_big_int(&first);
 	get_big_int(&second);
+	sum_big_int(&first,&second);
+	//printf("%s : %d\n",first.val,first.len);
 	printl(first.val);
-	printl(second.val);
 	return 0;
 }
 
@@ -61,6 +62,39 @@ void get_big_int(big_int *buf)
 	buf->len = len;
 	// insert new line
 	printl("");
+}
+
+void sum_big_int(big_int *first,big_int *second)
+{
+	// carry value for next two char
+	int carry = 0;
+	if (first->len < second->len) {
+		first->len = second->len;
+		first->val = realloc(first->val,first->len);
+	}
+	for (int i = first->len - 1,j = second->len - 1;i >= 0 && j >= 0;i--,j--) {
+		// this is the result of current chars sum
+		int temp = 0;
+		// first int char , convert it to real int
+		int f = first->val[i] - NUM;
+		// second int char , if i wasn't out of the second big int len 
+		int b = 0;
+		//if (j < second->len)
+			b = second->val[j] - NUM;
+		temp = f + b + carry;
+		carry = 0;
+		if (temp >= 10) {
+			carry = temp == 10 ? 1 : temp - 10;
+			temp -= 10;
+		}
+		printf("in i %d and j %d, first is %d and second is %d, and we have %d for temp,so carry is: %d\n",i,j,f,b,temp,carry);
+		first->val[i] = temp + NUM;
+	}
+}
+
+void sub_big_int(big_int *first,big_int *second)
+{
+
 }
 
 // terminal stuff

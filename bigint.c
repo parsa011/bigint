@@ -79,12 +79,11 @@ void sum_big_int(big_int *first,big_int *second)
 		int f = first->val[i] - NUM;
 		// second int char , if i wasn't out of the second big int len 
 		int b = 0;
-		//if (j < second->len)
-			b = second->val[j] - NUM;
+		b = second->val[j] - NUM;
 		temp = f + b + carry;
 		carry = 0;
 		if (temp >= 10) {
-			carry = temp == 10 ? 1 : temp - 10;
+			carry = temp == 10 ? 1 : temp / 10;
 			temp -= 10;
 		}
 		printf("in i %d and j %d, first is %d and second is %d, and we have %d for temp,so carry is: %d\n",i,j,f,b,temp,carry);

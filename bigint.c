@@ -77,6 +77,8 @@ void sum_big_int(big_int *first,big_int *second)
 		int temp = 0;
 		// first int char , convert it to real int
 		int f = first->val[i] - NUM;
+		if (f < 0)
+			f = 0;
 		// second int char , if i wasn't out of the second big int len 
 		int b = 0;
 		b = second->val[j] - NUM;

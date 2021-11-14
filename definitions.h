@@ -26,6 +26,8 @@ void get_big_int(big_int *);
 void sum_big_int(big_int *,big_int *);
 void sub_big_int(big_int *,big_int *);
 
+// helpers
+void shift_right(char *,int,int);
 
 // terminal stuff
 static struct termios term, oterm;

@@ -13,8 +13,8 @@ int main()
 	get_big_int(&first);
 	get_big_int(&second);
 	sum_big_int(&first,&second);
-	//printf("%s : %d\n",first.val,first.len);
-	printl(first.val);
+	printf("%s : %d\n",first.val,first.len);
+	//printl(first.val);
 	return 0;
 }
 
@@ -68,11 +68,16 @@ void sum_big_int(big_int *first,big_int *second)
 {
 	// carry value for next two char
 	int carry = 0;
+	int i, j;
 	if (first->len < second->len) {
 		first->len = second->len;
 		first->val = realloc(first->val,first->len);
+		while (first->val[first->len - 1] == NULL)
+			shift_right(first->val,first->len,0);
 	}
-	for (int i = first->len - 1,j = second->len - 1;i >= 0 && j >= 0;i--,j--) {
+	for (i = first->len - 1,j = second->len - 1;i >= 0 || j >= 0;i--,j--) {
+		while (first->val[i] == NULL)
+			i--;
 		// this is the result of current chars sum
 		int temp = 0;
 		// first int char , convert it to real int
@@ -82,6 +87,8 @@ void sum_big_int(big_int *first,big_int *second)
 		// second int char , if i wasn't out of the second big int len 
 		int b = 0;
 		b = second->val[j] - NUM;
+		if (b < 0)
+			b = 0;
 		temp = f + b + carry;
 		carry = 0;
 		if (temp >= 10) {
@@ -91,11 +98,22 @@ void sum_big_int(big_int *first,big_int *second)
 		printf("in i %d and j %d, first is %d and second is %d, and we have %d for temp,so carry is: %d\n",i,j,f,b,temp,carry);
 		first->val[i] = temp + NUM;
 	}
+	if (carry != 0) {
+	}
 }
 
 void sub_big_int(big_int *first,big_int *second)
 {
 
+}
+
+void shift_right(char *buf,int buflen,int start_index)
+{
+	char next = 0,temp = buf[start_index];
+	for (int i = buflen - 1;i > start_index;i--) {
+		buf[i] = buf[i - 1];
+		buf[i - 1] = ' ';
+	}
 }
 
 // terminal stuff

@@ -10,8 +10,10 @@
 typedef struct {
 	int len;		// len of val string
 	char *val;		// our big int will store here
-	int sign;		// sign of number , just can be -1 and 1
+	bool negative;	// sign of number , just can be -1 and 1
 } big_int;
+
+#define INIT_BIG_INT {0,NULL,false}
 
 // ----------------------
 //
@@ -29,6 +31,7 @@ void sub_big_int(big_int *,big_int *);
 // helpers
 void shift_right(char *,int,int);
 int get_char_as_int(char);
+void print_bigint(big_int);
 
 // terminal stuff
 static struct termios term, oterm;

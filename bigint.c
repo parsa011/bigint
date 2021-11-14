@@ -9,12 +9,12 @@
 
 int main() 
 {
-	big_int first, second;
+	big_int first = INIT_BIG_INT, second = INIT_BIG_INT;
 	get_big_int(&first);
 	get_big_int(&second);
-	sum_big_int(&first,&second);
-	printf("%s : %d\n",first.val,first.len);
-	//printl(first.val);
+	sub_big_int(&first,&second);
+	print_bigint(first);
+	printl("");
 	return 0;
 }
 
@@ -46,15 +46,18 @@ void get_big_int(big_int *buf)
 			// check if c is digit , or its the first char that user inputed and its '-' (for negative numbers)
 			bool is_negative = len == 0 && c == '-';
 			if (isdigit(c) || is_negative) {
-				// assign sing of the buf when first char was '-'
-				if (is_negative)
-					buf->sign = -1;
+				// asnegative sing of the buf when first char was '-'
+				if (is_negative) {
+					buf->negative = true;
+					goto write_char;
+				}
 				// check if we need more space for our buf->val
 				if (len == bufsize) {
 					bufsize += BUFSIZE;
 					buf->val = realloc(buf->val,bufsize);
 				}
 				buf->val[len++] = c;
+write_char:
 				printf("%c",c);
 			}
 		}
@@ -66,12 +69,18 @@ void get_big_int(big_int *buf)
 
 void sum_big_int(big_int *first,big_int *second)
 {
+	// if one of them was negative , we have to subtract them :DDD , nice right ?
+	if ((first->negative && !second->negative) || (!first->negative && second->negative)) {
+		sub_big_int(first,second);
+		return;
+	}
 	// carry value for next two char
 	int carry = 0;
 	int i, j;
 	if (first->len < second->len) {
 		first->len = second->len;
 		first->val = realloc(first->val,first->len);
+		// after realloc , move chars all they way down to end of array
 		while (first->val[first->len - 1] == NULL)
 			shift_right(first->val,first->len,0);
 	}
@@ -102,7 +111,11 @@ void sum_big_int(big_int *first,big_int *second)
 
 void sub_big_int(big_int *first,big_int *second)
 {
-
+	// if both was negative
+	if (first->negative && second->negative) {
+		sum_big_int(first,second);
+		return;
+	}
 }
 
 void shift_right(char *buf,int buflen,int start_index)
@@ -118,6 +131,13 @@ void shift_right(char *buf,int buflen,int start_index)
 int get_char_as_int(char c)
 {
 	return isdigit(c) ? c - NUM : 0;
+}
+
+void print_bigint(big_int buf)
+{
+	if (buf.negative)
+		printf("-");
+	printf("%s",buf.val);
 }
 
 // terminal stuff

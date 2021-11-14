@@ -99,6 +99,10 @@ void sum_big_int(big_int *first,big_int *second)
 		first->val[i] = temp + NUM;
 	}
 	if (carry != 0) {
+		first->len++;
+		first->val = realloc(first->val,first->len);
+		shift_right(first->val,first->len,0);
+		first->val[0] = carry + NUM;
 	}
 }
 

@@ -78,24 +78,18 @@ void sum_big_int(big_int *first,big_int *second)
 	for (i = first->len - 1,j = second->len - 1;i >= 0 || j >= 0;i--,j--) {
 		while (first->val[i] == NULL)
 			i--;
-		// this is the result of current chars sum
-		int temp = 0;
 		// first int char , convert it to real int
-		int f = first->val[i] - NUM;
-		if (f < 0)
-			f = 0;
+		int f = get_char_as_int(first->val[i]);
 		// second int char , if i wasn't out of the second big int len 
-		int b = 0;
-		b = second->val[j] - NUM;
-		if (b < 0)
-			b = 0;
-		temp = f + b + carry;
+		int b = get_char_as_int(second->val[j]);
+		// this is the result of current chars sum
+		int temp = f + b + carry;
 		carry = 0;
 		if (temp >= 10) {
 			carry = temp == 10 ? 1 : temp / 10;
 			temp -= 10;
 		}
-		printf("in i %d and j %d, first is %d and second is %d, and we have %d for temp,so carry is: %d\n",i,j,f,b,temp,carry);
+		//printf("in i %d and j %d,first is %d and second is %d, and we have %d for temp,so carry is: %d\n",i,j,f,b,temp,carry);
 		first->val[i] = temp + NUM;
 	}
 	if (carry != 0) {
@@ -118,6 +112,12 @@ void shift_right(char *buf,int buflen,int start_index)
 		buf[i] = buf[i - 1];
 		buf[i - 1] = ' ';
 	}
+}
+
+// if input char (c) is digit , decrease 48 of to convert to real int
+int get_char_as_int(char c)
+{
+	return isdigit(c) ? c - NUM : 0;
 }
 
 // terminal stuff

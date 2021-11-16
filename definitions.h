@@ -32,6 +32,7 @@ void sub_big_int(big_int *,big_int *);
 void shift_right(char *,int,int);
 int get_char_as_int(char);
 void print_bigint(big_int);
+void realloc_and_change(big_int *,int,bool,bool);
 
 // terminal stuff
 static struct termios term, oterm;

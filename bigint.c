@@ -12,6 +12,7 @@ int main()
 	big_int first = INIT_BIG_INT, second = INIT_BIG_INT;
 	get_big_int(&first);
 	get_big_int(&second);
+	sum_big_int(&first,&second);
 	sub_big_int(&first,&second);
 	print_bigint(first);
 	printl("");
@@ -78,11 +79,7 @@ void sum_big_int(big_int *first,big_int *second)
 	int carry = 0;
 	int i, j;
 	if (first->len < second->len) {
-		first->len = second->len;
-		first->val = realloc(first->val,first->len);
-		// after realloc , move chars all they way down to end of array
-		while (first->val[first->len - 1] == NULL)
-			shift_right(first->val,first->len,0);
+		realloc_and_change(first,second->len,false,true);
 	}
 	for (i = first->len - 1,j = second->len - 1;i >= 0 || j >= 0;i--,j--) {
 		while (first->val[i] == NULL)
@@ -116,8 +113,24 @@ void sub_big_int(big_int *first,big_int *second)
 		sum_big_int(first,second);
 		return;
 	}
+	// if second->val[current] > first->val[current] , we need to get one from current - 1 (if wasn't 0)
+	bool need_carry = false;
+	// instead of store char index that we wanna get 10 from it , store 10 in this var , if still
+	// 	it was 0 that means we cant get anything from other remain chars
+	int carry = 0;
+	int i , j;
+	// if second string was bigger that first one , realloc first value and increase it value
+	// and first will become negative
+	if (first->len < second->len) {
+		realloc_and_change(first,second->len,true,true);
+	}
+	for (i = first->len - 1,j = second->len - 1;i >= 0 || j >= 0;i--,j--) {
+		int f = get_char_as_int(first->val[i]);	
+		int b = get_char_as_int(second->val[j]);
+	}
 }
 
+// do shift write for buf string , start from end and end in start_index 
 void shift_right(char *buf,int buflen,int start_index)
 {
 	char next = 0,temp = buf[start_index];
@@ -138,6 +151,20 @@ void print_bigint(big_int buf)
 	if (buf.negative)
 		printf("-");
 	printf("%s",buf.val);
+}
+
+// for example when second is bigger than first one , we need to increase and set first size to second size
+void realloc_and_change(big_int *buf,int len,bool change_negative,bool do_shift)
+{
+	buf->len = len;
+	if (change_negative)
+		buf->negative = !buf->negative;
+	buf->val = realloc(buf->val,buf->len);
+	// after realloc , move chars all they way down to end of array
+	if (do_shift)
+		while (buf->val[buf->len - 1] == NULL)
+			shift_right(buf->val,buf->len,0);
+
 }
 
 // terminal stuff
